@@ -9,6 +9,7 @@ program riemann
     implicit none
     real :: dt, t 
     integer :: nt 
+    real :: start, finish 
 
     call read_input 
     call mem_alloc
@@ -19,6 +20,7 @@ program riemann
     ! time loop 
     t = 0.0 
     write(*, '(a)') '        n          dt             t'
+    call cpu_time(start)
     do nt = 1, ntmax 
         call compute_dt(dt) 
         if (t + dt > t_final) dt = t_final - t 
@@ -35,12 +37,14 @@ program riemann
         ! goto 100 
 
         ! explicit euler 
-        q = q + dt*res 
+        q = q + dt*invh*res 
 
         t = t + dt 
         write(*, '(i9, 2f15.7)') nt, dt, t
         if (t == t_final) exit 
     end do 
+    call cpu_time(finish)
+    write(*, '("Time elapsed: ", f10.5, "s")') finish - start 
 
     call write_solution(q, x, y, n, n, ib, ie, jb, je) 
 
