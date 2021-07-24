@@ -9,6 +9,8 @@ program riemann
     implicit none
     real :: dt, t 
     integer :: nt 
+    integer :: i, j, l 
+    real :: k ! dt/h 
     real :: start, finish 
 
     call read_input 
@@ -37,14 +39,21 @@ program riemann
         ! goto 100 
 
         ! explicit euler 
-        q = q + dt*res 
+        k = dt*invh 
+        do l = 1, 4 
+            do j = jb, je 
+                do i = ib, ie 
+                    q(i,j,l) = q(i,j,l) + k*res(i,j,l) 
+                end do 
+            end do 
+        end do 
 
         t = t + dt 
         write(*, '(i9, 2f15.7)') nt, dt, t
         if (t == t_final) exit 
     end do 
-    call cpu_time(finish) 
-    write(*, '("Time elaped: ", f10.5)') finish - start
+    call cpu_time(finish)
+    write(*, '("Time elapsed: ", f10.5, "s")') finish - start 
 
     call write_solution(q, x, y, n, n, ib, ie, jb, je) 
 

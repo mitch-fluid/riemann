@@ -9,10 +9,10 @@ module data_mod
     real, allocatable, dimension(:,:,:) :: q 
 
     ! conservative left and right state 
-    real, allocatable, dimension(:,:) :: ql, qr 
+    real, allocatable, dimension(:,:,:) :: ql, qr 
 
     ! numerical flux 
-    real, allocatable, dimension(:,:) :: f 
+    real, allocatable, dimension(:,:,:) :: f  
 
     ! residual 
     real, allocatable, dimension(:,:,:) :: res 
@@ -22,8 +22,8 @@ contains
         
         allocate(x(ntot), y(ntot))
         allocate(q(ntot, ntot, 4)) 
-        allocate(ql(ntot,4), qr(ntot,4)) 
-        allocate(f(ntot,4))
+        allocate(ql(ntot, ntot, 4), qr(ntot, ntot, 4))
+        allocate(f(ntot, ntot, 4))
         allocate(res(ntot,ntot,4))
 
     end subroutine mem_alloc 
