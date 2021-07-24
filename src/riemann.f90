@@ -9,6 +9,8 @@ program riemann
     implicit none
     real :: dt, t 
     integer :: nt 
+    integer :: i, j, l 
+    real :: k ! dt/h 
     real :: start, finish 
 
     call read_input 
@@ -37,7 +39,14 @@ program riemann
         ! goto 100 
 
         ! explicit euler 
-        q = q + dt*invh*res 
+        k = dt*invh 
+        do l = 1, 4 
+            do j = jb, je 
+                do i = ib, ie 
+                    q(i,j,l) = q(i,j,l) + k*res(i,j,l) 
+                end do 
+            end do 
+        end do 
 
         t = t + dt 
         write(*, '(i9, 2f15.7)') nt, dt, t

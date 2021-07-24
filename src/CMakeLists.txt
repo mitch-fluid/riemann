@@ -2,7 +2,7 @@ add_executable(
     riemann.app 
     bc_mod.f90
     data_mod.f90
-    fhat_mod.f90
+    roe_mod.f90
     fluxr_mod.f90
     init_mod.f90
     io_mod.f90
